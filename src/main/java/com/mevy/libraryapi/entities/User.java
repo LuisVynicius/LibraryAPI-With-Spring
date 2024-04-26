@@ -3,12 +3,19 @@ package com.mevy.libraryapi.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.mevy.libraryapi.entities.enums.ProfileEnum;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,7 +27,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_user")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id", "email"})
@@ -42,4 +48,25 @@ public class User implements Serializable{
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tb_user_profile")
+    @Column(name = "profile", nullable = false)
+    private Set<Integer> profiles = new HashSet<>();
+
+    public User(Long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Set<ProfileEnum> getProfiles(){
+        return profiles.stream().map(x -> ProfileEnum.valueOf(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(ProfileEnum profile){
+        profiles.add(profile.getCode());
+    }
+    
 }
