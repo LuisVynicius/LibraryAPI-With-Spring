@@ -35,7 +35,7 @@ public class Refund implements Serializable{
     private Instant moment;
 
     @Column(nullable = false)
-    private String reasion;
+    private String reason;
 
     @OneToOne
     @MapsId

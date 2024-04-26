@@ -14,7 +14,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_book")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id", "name", "author"})
@@ -58,5 +56,14 @@ public class Book implements Serializable{
 
     @OneToMany(mappedBy = "id.book")
     private Set<OrderItem> items = new HashSet<>();
+
+    public Book(Long id, String name, String path, String author, Integer quantity, Float price) {
+        this.id = id;
+        this.name = name;
+        this.path = path;
+        this.author = author;
+        this.quantity = quantity;
+        this.price = price;
+    }
 
 }

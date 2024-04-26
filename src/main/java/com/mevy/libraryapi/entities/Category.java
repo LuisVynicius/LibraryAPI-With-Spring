@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_category")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
@@ -36,4 +34,10 @@ public class Category implements Serializable{
     
     @ManyToMany(mappedBy = "categories")
     private Set<Book> books = new HashSet<>();
+
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 }
