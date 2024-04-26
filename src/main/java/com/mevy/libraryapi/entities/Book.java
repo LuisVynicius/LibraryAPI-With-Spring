@@ -1,12 +1,18 @@
 package com.mevy.libraryapi.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -42,5 +48,15 @@ public class Book implements Serializable{
 
     @Column(nullable = false)
     private Float price;
+
+    @ManyToMany
+    @JoinTable(
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.book")
+    private Set<OrderItem> items = new HashSet<>();
 
 }
