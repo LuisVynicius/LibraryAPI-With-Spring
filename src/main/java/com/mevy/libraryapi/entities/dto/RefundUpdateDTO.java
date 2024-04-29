@@ -1,7 +1,8 @@
 package com.mevy.libraryapi.entities.dto;
 
+
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserUpdateDTO {
+public class RefundUpdateDTO {
     
     @NotNull(message = "This field must not be null. ")
     private Long id;
-    
-    @NotNull(message = "This field must not be null. ")
-    @Size(min = 5, max = 25, message = "This field must have between 5 and 25 characters. ")
-    private String password;
+
+    @NotBlank(message = "This field must have at least one character. ")
+    private String reason;
 
 }
