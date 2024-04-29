@@ -27,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id", "email"})
+@EqualsAndHashCode(of = {"id", "username", "email"})
 public class User implements Serializable{
     
     @Id
@@ -35,7 +35,7 @@ public class User implements Serializable{
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(unique = true, nullable = false)
