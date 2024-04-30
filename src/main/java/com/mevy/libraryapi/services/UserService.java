@@ -24,9 +24,10 @@ public class UserService {
     }
 
     @Transactional
-    public void create(User user){
+    public User create(User user){
         user.setId(null);
-        userRepository.save(user);
+        user = userRepository.save(user);
+        return user;
     }
 
     public void deleteById(Long id){

@@ -23,9 +23,10 @@ public class RefundService {
     }
 
     @Transactional
-    public void create(Refund refund){
+    public Refund create(Refund refund){
         refund.setId(null);
-        refundRepository.save(refund);
+        refund = refundRepository.save(refund);
+        return refund;
     }
 
     public void deleteById(Long id){

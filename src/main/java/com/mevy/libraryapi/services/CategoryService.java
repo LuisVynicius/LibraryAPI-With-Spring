@@ -21,9 +21,10 @@ public class CategoryService {
     }
 
     @Transactional
-    public void create(Category category){
+    public Category create(Category category){
         category.setId(null);
-        categoryRepository.save(category);
+        category = categoryRepository.save(category);
+        return category;
     }
 
     public void deleteById(Long id){

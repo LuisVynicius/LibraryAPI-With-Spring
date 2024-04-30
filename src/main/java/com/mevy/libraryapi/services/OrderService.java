@@ -20,9 +20,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void create(Order order){
+    public Order create(Order order){
         order.setId(null);
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+        return order;
     }
 
     public void deleteById(Long id){

@@ -23,9 +23,10 @@ public class BookService {
     }
 
     @Transactional
-    public void create(Book book){
+    public Book create(Book book){
         book.setId(null);
-        bookRepository.save(book);
+        book = bookRepository.save(book);
+        return book;
     }
 
     public void deleteById(Long id){

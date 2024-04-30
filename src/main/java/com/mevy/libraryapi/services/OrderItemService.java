@@ -20,9 +20,9 @@ public class OrderItemService {
     }
 
     @Transactional
-    public void create(OrderItem order){
-        order.setId(null);
-        orderRepository.save(order);
+    public OrderItem create(OrderItem orderItem){
+        orderItem = orderRepository.save(orderItem);
+        return orderItem;
     }
 
     public void deleteById(OrderItemPK id){
