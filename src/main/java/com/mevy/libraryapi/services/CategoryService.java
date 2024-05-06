@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.libraryapi.entities.Category;
 import com.mevy.libraryapi.repositories.CategoryRepository;
+import com.mevy.libraryapi.services.exceptions.DataBindingViolationException;
+import com.mevy.libraryapi.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -17,7 +19,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public Category findById(Long id){
-        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found. id: " + id));
+        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Category.class, id));
     }
 
     @Transactional
@@ -28,10 +30,11 @@ public class CategoryService {
     }
 
     public void deleteById(Long id){
+        findById(id);
         try {
             categoryRepository.deleteById(id);
         } catch(DataIntegrityViolationException e){
-            throw new RuntimeException("Data integrity exception. ");
+            throw new DataBindingViolationException();
         }
     }
 
@@ -41,11 +44,11 @@ public class CategoryService {
             Category oldCategory = categoryRepository.getReferenceById(category.getId());
             updateData(oldCategory, category);
         } catch(EntityNotFoundException e){
-            new RuntimeException("Category not found. id: " + category.getId());
+            new ResourceNotFoundException(Category.class, category.getId());
         }
     }
 
-    public void updateData(Category oldCategory, Category category){
+    private void updateData(Category oldCategory, Category category){
         oldCategory.setName(category.getName());
     }
 

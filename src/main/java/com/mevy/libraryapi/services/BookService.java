@@ -9,6 +9,8 @@ import com.mevy.libraryapi.entities.Book;
 import com.mevy.libraryapi.entities.dto.BookCreateDTO;
 import com.mevy.libraryapi.entities.dto.BookUpdateDTO;
 import com.mevy.libraryapi.repositories.BookRepository;
+import com.mevy.libraryapi.services.exceptions.DataBindingViolationException;
+import com.mevy.libraryapi.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -19,7 +21,7 @@ public class BookService {
     private BookRepository bookRepository;
 
     public Book findById(Long id){
-        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found. id: " + id));
+        return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Book.class, id));
     }
 
     @Transactional
@@ -30,10 +32,11 @@ public class BookService {
     }
 
     public void deleteById(Long id){
+        findById(id);
         try {
             bookRepository.deleteById(id);
         } catch(DataIntegrityViolationException e){
-            throw new RuntimeException("Data integrity exception. ");
+            throw new DataBindingViolationException();
         }
     }
 
@@ -43,11 +46,11 @@ public class BookService {
             Book oldBook = bookRepository.getReferenceById(book.getId());
             updateData(oldBook, book);
         } catch(EntityNotFoundException e){
-            new RuntimeException("Book not found. id: " + book.getId());
+            new ResourceNotFoundException(Book.class, book.getId());
         }
     }
 
-    public void updateData(Book oldBook, Book book){
+    private void updateData(Book oldBook, Book book){
         oldBook.setPath(book.getPath());
         oldBook.setPrice(book.getPrice());
     }

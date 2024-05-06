@@ -17,6 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.mevy.libraryapi.entities.Category;
 import com.mevy.libraryapi.services.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -30,7 +32,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Category category){
+    public ResponseEntity<Void> create(@RequestBody @Valid Category category){
         category = categoryService.create(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/id")
@@ -40,7 +42,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Category category){
+    public ResponseEntity<Void> update(@RequestBody @Valid Category category){
         categoryService.update(category);
         return ResponseEntity.noContent().build();
     }

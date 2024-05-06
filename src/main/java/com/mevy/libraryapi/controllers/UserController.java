@@ -19,6 +19,8 @@ import com.mevy.libraryapi.entities.dto.UserCreateDTO;
 import com.mevy.libraryapi.entities.dto.UserUpdateDTO;
 import com.mevy.libraryapi.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody UserCreateDTO userCreateDTO){
+    public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO userCreateDTO){
         User user = userService.fromDTO(userCreateDTO);
         user = userService.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -43,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody UserUpdateDTO userUpdateDTO){
+    public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDTO userUpdateDTO){
         User user = userService.fromDTO(userUpdateDTO);
         userService.update(user);
         return ResponseEntity.noContent().build();

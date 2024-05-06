@@ -17,6 +17,8 @@ import com.mevy.libraryapi.entities.Order;
 import com.mevy.libraryapi.entities.dto.OrderCreateDTO;
 import com.mevy.libraryapi.services.OrderService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -30,7 +32,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody OrderCreateDTO orderDTO){
+    public ResponseEntity<Void> create(@RequestBody @Valid OrderCreateDTO orderDTO){
         Order order = orderService.fromDTO(orderDTO);
         order = orderService.create(order);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

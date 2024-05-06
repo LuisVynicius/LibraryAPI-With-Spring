@@ -19,6 +19,8 @@ import com.mevy.libraryapi.entities.dto.RefundCreateDTO;
 import com.mevy.libraryapi.entities.dto.RefundUpdateDTO;
 import com.mevy.libraryapi.services.RefundService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/refund")
 public class RefundController {
@@ -32,7 +34,7 @@ public class RefundController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody RefundCreateDTO refundDTO){
+    public ResponseEntity<Void> create(@RequestBody @Valid RefundCreateDTO refundDTO){
         Refund refund = refundService.fromDTO(refundDTO);
         refund = refundService.create(refund);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -43,7 +45,7 @@ public class RefundController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody RefundUpdateDTO refundDTO){
+    public ResponseEntity<Void> update(@RequestBody @Valid RefundUpdateDTO refundDTO){
         Refund refund = refundService.fromDTO(refundDTO);
         refundService.update(refund);
         return ResponseEntity.noContent().build();

@@ -9,6 +9,8 @@ import com.mevy.libraryapi.entities.Refund;
 import com.mevy.libraryapi.entities.dto.RefundCreateDTO;
 import com.mevy.libraryapi.entities.dto.RefundUpdateDTO;
 import com.mevy.libraryapi.repositories.RefundRepository;
+import com.mevy.libraryapi.services.exceptions.DataBindingViolationException;
+import com.mevy.libraryapi.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -19,7 +21,7 @@ public class RefundService {
     private RefundRepository refundRepository;
 
     public Refund findById(Long id){
-        return refundRepository.findById(id).orElseThrow(() -> new RuntimeException("Refund not found. id: " + id));
+        return refundRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Refund.class, id));
     }
 
     @Transactional
@@ -30,10 +32,11 @@ public class RefundService {
     }
 
     public void deleteById(Long id){
+        findById(id);
         try {
             refundRepository.deleteById(id);
         } catch(DataIntegrityViolationException e){
-            throw new RuntimeException("Data integrity exception. ");
+            throw new DataBindingViolationException();
         }
     }
 
@@ -43,11 +46,11 @@ public class RefundService {
             Refund oldRefund = refundRepository.getReferenceById(refund.getId());
             updateData(oldRefund, refund);
         } catch(EntityNotFoundException e){
-            new RuntimeException("Refund not found. id: " + refund.getId());
+            new ResourceNotFoundException(Refund.class, refund.getId());
         }
     }
 
-    public void updateData(Refund oldRefund, Refund refund){
+    private void updateData(Refund oldRefund, Refund refund){
         oldRefund.setReason(refund.getReason());
     }
 

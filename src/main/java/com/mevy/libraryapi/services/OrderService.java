@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mevy.libraryapi.entities.Order;
 import com.mevy.libraryapi.entities.dto.OrderCreateDTO;
 import com.mevy.libraryapi.repositories.OrderRepository;
+import com.mevy.libraryapi.services.exceptions.DataBindingViolationException;
+import com.mevy.libraryapi.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class OrderService {
@@ -16,7 +18,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     public Order findById(Long id){
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found. id: " + id));
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Order.class, id));
     }
 
     @Transactional
@@ -27,10 +29,11 @@ public class OrderService {
     }
 
     public void deleteById(Long id){
+        findById(id);
         try {
             orderRepository.deleteById(id);
         } catch(DataIntegrityViolationException e){
-            throw new RuntimeException("Data integrity exception. ");
+            throw new DataBindingViolationException();
         }
     }
 

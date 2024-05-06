@@ -19,6 +19,8 @@ import com.mevy.libraryapi.entities.dto.BookCreateDTO;
 import com.mevy.libraryapi.entities.dto.BookUpdateDTO;
 import com.mevy.libraryapi.services.BookService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -32,7 +34,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody BookCreateDTO bookCreateDTO){
+    public ResponseEntity<Void> create(@RequestBody @Valid BookCreateDTO bookCreateDTO){
         Book book = bookService.fromDTO(bookCreateDTO);
         book = bookService.create(book);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -43,7 +45,7 @@ public class BookController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody BookUpdateDTO bookUpdateDTO){
+    public ResponseEntity<Void> update(@RequestBody @Valid BookUpdateDTO bookUpdateDTO){
         Book book = bookService.fromDTO(bookUpdateDTO);
         bookService.update(book);
         return ResponseEntity.noContent().build();
