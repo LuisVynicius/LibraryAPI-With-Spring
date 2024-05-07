@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mevy.libraryapi.entities.enums.ProfileEnum;
 
 import jakarta.persistence.CollectionTable;
@@ -44,6 +45,7 @@ public class User implements Serializable{
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
 

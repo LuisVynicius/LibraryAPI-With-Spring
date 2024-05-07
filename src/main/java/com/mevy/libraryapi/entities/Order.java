@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,9 +42,11 @@ public class Order implements Serializable{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "order")
     private Refund refund;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.order")
     Set<OrderItem> items = new HashSet<>();
 

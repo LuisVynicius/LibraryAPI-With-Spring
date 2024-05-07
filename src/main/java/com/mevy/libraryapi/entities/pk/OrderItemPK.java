@@ -1,5 +1,6 @@
 package com.mevy.libraryapi.entities.pk;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mevy.libraryapi.entities.Book;
 import com.mevy.libraryapi.entities.Order;
 
@@ -16,10 +17,12 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class OrderItemPK {
     
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
     
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Category implements Serializable{
     @Column(unique = true, nullable = false)
     private String name;
     
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Book> books = new HashSet<>();
 
