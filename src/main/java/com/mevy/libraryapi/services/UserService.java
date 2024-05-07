@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public User findById(Long id){
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(User.class, id));
     }
@@ -32,6 +36,7 @@ public class UserService {
     @Transactional
     public User create(User user){
         user.setId(null);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setProfiles(Stream.of(ProfileEnum.ROLE_USER.getCode()).collect(Collectors.toSet()));
         user = userRepository.save(user);
         return user;
@@ -57,7 +62,7 @@ public class UserService {
     }
 
     private void updateData(User oldUser, User user){
-        oldUser.setPassword(user.getPassword());
+        oldUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     }
 
     public User fromDTO(@Valid UserCreateDTO userDTO){

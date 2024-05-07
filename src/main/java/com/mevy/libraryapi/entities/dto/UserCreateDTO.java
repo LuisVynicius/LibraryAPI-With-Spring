@@ -16,7 +16,7 @@ public class UserCreateDTO {
     private String username;
 
     @NotNull(message = "This field must not be null. ")
-    @Size(min = 3, max = 15, message = "This field must have between 15 and 30 characters. ")
+    @Size(min = 6, max = 45, message = "This field must have between 6 and 45 characters. ")
     private String email;
 
     @NotNull(message = "This field must not be null. ")
