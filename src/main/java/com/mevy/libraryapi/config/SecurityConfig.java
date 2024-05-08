@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.mevy.libraryapi.security.JWTAuthenticationFilter;
 import com.mevy.libraryapi.security.JWTUtil;
 
 @Configuration
@@ -60,6 +61,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, PUBLIC_POST).permitAll()
                     .anyRequest().authenticated()
                 )
+                .authenticationManager(authenticationManager)
+                .addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
                 .build();
     }
 
